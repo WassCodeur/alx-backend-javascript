@@ -2,6 +2,9 @@ import Currency from './3-currency';
 
 export default class Pricing {
   constructor(amount, currency) {
+    if (!(currency instanceof Currency)) {
+      throw new TypeError('Invalid attribute type');
+    }
     this._amount = amount;
     this._currency = currency;
   }
@@ -19,6 +22,9 @@ export default class Pricing {
   }
 
   set currency(value) {
+    if (!(value instanceof Currency)) {
+      throw new TypeError('Invalid attribute type');
+    }
     this._currency = value;
   }
 
