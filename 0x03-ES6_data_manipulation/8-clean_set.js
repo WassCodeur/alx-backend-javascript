@@ -1,8 +1,8 @@
 export default function cleanSet(mySet, startStr) {
   // [...mySet] convert a set to an array
- if(!mySet || !startStr || !(mySet instanceof Set) || typeof startStr !== 'string'){
-	 return '';
- }
+  if (!mySet || !startStr || !(mySet instanceof Set) || typeof startStr !== 'string') {
+    return '';
+  }
   const len = startStr.length;
   let result = [];
   if (len > 0) {
