@@ -1,9 +1,9 @@
 export default function cleanSet(mySet, startStr) {
   // [...mySet] convert a set to an array
-  if (!mySet || !startStr || !(mySet instanceof Set) || typeof startStr !== 'string') {
+  const len = startStr.length;
+  if (!mySet || !startStr || !(mySet instanceof Set) || typeof startStr !== 'string' || len <= 0) {
     return '';
   }
-  const len = startStr.length;
   let result = [];
   if (len > 0) {
     const filterArray = [...mySet].filter((value) => value.startsWith(startStr));
