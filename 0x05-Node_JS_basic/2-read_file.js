@@ -2,33 +2,37 @@ const fs = require('fs');
 
 function countStudents(path) {
   try {
-    let csNb = 0;
-    let sweNb = 0;
-    const stdsCs = [];
-    const stdsSwe = [];
-    let itemArr = [];
+    const FIELDS = {};
     const data = fs.readFileSync(path, 'utf-8');
-    const dataArr = data.split('\n');
-    dataArr.pop();
-    const len = dataArr.length;
-    for (let i = 1; i < len;) {
-      itemArr = dataArr[i].split(',');
-      if (itemArr[3] === 'CS') {
-        csNb += 1;
-        stdsCs.push(itemArr[0]);
-      } else if (itemArr[3] === 'SWE') {
-        sweNb += 1;
-        stdsSwe.push(itemArr[0]);
+
+    const lines = data.split(/\r?\n/);
+    let len = lines.length - 1;
+    for (let i = 1; i < lines.length;) {
+      if (lines[i].trim() !== '') {
+        const [fname, lname, age, field] = lines[i].split(','); // eslint-disable-line
+        if (!FIELDS[field]) {
+          FIELDS[field] = {
+            count: 1,
+            students: [fname],
+          };
+        } else {
+          const newCount = FIELDS[field].count + 1;
+          const newStudents = FIELDS[field].students.concat(fname);
+          FIELDS[field] = {
+            count: newCount,
+            students: newStudents,
+          };
+        }
+      } else {
+        len -= 1;
       }
       i += 1;
     }
-    process.stdout.write(`Number of students: ${len - 1}\n`);
-    if (csNb >= sweNb) {
-      process.stdout.write(`Number of students in CS: ${csNb}. List: ${stdsCs.join(', ')}\n`);
-      process.stdout.write(`Number of students in SWE: ${sweNb}. List: ${stdsSwe.join(', ')}`);
-    } else {
-      process.stdout.write(`Number of students in SWE: ${sweNb}. List: ${stdsSwe.join(', ')}`);
-      process.stdout.write(`Number of students in CS: ${csNb}. List: ${stdsCs.join(', ')}`);
+    process.stdout.write(`Number of students: ${len}\n`);
+    for (const field of Object.keys(FIELDS)) {
+      const { students } = FIELDS[field];
+      const { count } = FIELDS[field];
+      process.stdout.write(`Number of students in ${field}: ${count}. LIST: ${students.join(', ')}\n`);
     }
   } catch (err) {
     throw new Error('Cannot load the database');
