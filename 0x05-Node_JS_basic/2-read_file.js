@@ -32,7 +32,7 @@ function countStudents(path) {
     for (const field of Object.keys(FIELDS)) {
       const { students } = FIELDS[field];
       const { count } = FIELDS[field];
-      process.stdout.write(`Number of students in ${field}: ${count}. LIST: ${students.join(', ')}\n`);
+      process.stdout.write(`Number of students in ${field} ${count}. LIST: ${students.join(', ')}\n`);
     }
   } catch (err) {
     throw new Error('Cannot load the database');
