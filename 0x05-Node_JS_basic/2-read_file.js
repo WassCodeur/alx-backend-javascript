@@ -13,11 +13,11 @@ function countStudents(path) {
         if (!FIELDS[field]) {
           FIELDS[field] = {
             count: 1,
-            students: [fname],
+            students: fname,
           };
         } else {
           const newCount = FIELDS[field].count + 1;
-          const newStudents = FIELDS[field].students.concat(fname);
+          const newStudents = FIELDS[field].students.concat(`, ${fname}`);
           FIELDS[field] = {
             count: newCount,
             students: newStudents,
@@ -32,7 +32,7 @@ function countStudents(path) {
     for (const field of Object.keys(FIELDS)) {
       const { students } = FIELDS[field];
       const { count } = FIELDS[field];
-      console.log(`Number of students in ${field} ${count}. LIST: ${students.join(', ')}`);
+      console.log(`Number of students in ${field}: ${count}. LIST: ${students}`);
     }
   } catch (err) {
     throw new Error('Cannot load the database');
