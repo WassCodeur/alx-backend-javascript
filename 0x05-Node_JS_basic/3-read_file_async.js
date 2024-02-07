@@ -1,38 +1,42 @@
 const fs = require('fs');
 
 function countStudents(path) {
-  let csNb = 0;
-  let sweNb = 0;
-  const sweArr = [];
-  const csArr = [];
-  let stdsArr = [];
+  const FIELDS = {};
   return (new Promise((resolve) => {
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) {
         throw new Error('Cannot load the database');
       }
-      const dataArr = data.split('\n');
-      dataArr.pop();
-      const len = dataArr.length;
-      for (let i = 1; i < len;) {
-        stdsArr = dataArr[i].split(',');
-        if (stdsArr[3] === 'CS') {
-          csNb += 1;
-          csArr.push(stdsArr[0]);
-        } else if (stdsArr[3] === 'SWE') {
-          sweNb += 1;
-          sweArr.push(stdsArr[0]);
+      const lines = data.split(/\r?\n/);
+      let len = lines.length - 1;
+      for (let i = 1; i < lines.length;) {
+        if (lines[i].trim() !== '') {
+            const [fname, lname, age, field] = lines[i].split(',') // eslint-disable-line
+          if (!FIELDS[field]) {
+            FIELDS[field] = {
+              count: 1,
+              students: [fname],
+            };
+          } else {
+            const nwCount = FIELDS[field].count + 1;
+            const nwStudents = FIELDS[field].students.concat(fname);
+            FIELDS[field] = {
+              count: nwCount,
+              students: nwStudents,
+            };
+          }
+        } else {
+          len -= 1;
         }
         i += 1;
       }
-      process.stdout.write(`Number of students: ${len - 1}\n`);
-      if (csNb >= sweNb) {
-        process.stdout.write(`Number of students in CS: ${csNb}. List: ${csArr.join(', ')}\n`);
-        process.stdout.write(`Number of students in CS: ${sweNb}. List: ${sweArr.join(', ')}\n`);
-      } else {
-        process.stdout.write(`Number of students in SWE: ${sweNb}. List: ${sweArr.join(', ')}`);
-        process.stdout.write(`Number of students in CS: ${csNb}. List: ${csArr.join(', ')}`);
+      process.stdout.write(`Number of students: ${len}\n`);
+      for (const field of Object.keys(FIELDS)) {
+        const { count } = FIELDS[field];
+        const { students } = FIELDS[field];
+        process.stdout.write(`Number of students in ${field}: ${count}. List: ${students.join(', ')}\n`);
       }
+
       resolve();
     });
   }));
