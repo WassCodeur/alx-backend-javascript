@@ -15,11 +15,11 @@ function countStudents(path) {
           if (!FIELDS[field]) {
             FIELDS[field] = {
               count: 1,
-              students: [fname],
+              students: fname,
             };
           } else {
             const nwCount = FIELDS[field].count + 1;
-            const nwStudents = FIELDS[field].students.concat(fname);
+            const nwStudents = FIELDS[field].students.concat(`, ${fname}`);
             FIELDS[field] = {
               count: nwCount,
               students: nwStudents,
@@ -34,7 +34,7 @@ function countStudents(path) {
       for (const field of Object.keys(FIELDS)) {
         const { count } = FIELDS[field];
         const { students } = FIELDS[field];
-        console.log(`Number of students in ${field}: ${count}. List: ${students.join(', ')}`);
+        console.log(`Number of students in ${field}: ${count}. List: ${students}`);
       }
 
       resolve();
