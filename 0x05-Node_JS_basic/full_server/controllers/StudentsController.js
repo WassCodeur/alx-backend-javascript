@@ -8,7 +8,7 @@ export default class StudentsController {
       .then((value) => {
         let responseData = 'This is the list of our students';
         for (const field of Object.keys(value)) {
-          const students = value[field].sort();
+          const students = value[field];
           responseData += (`\nNumber of students in ${field}: ${students.length}. List: ${students.join(', ')}`);
         }
         response.status(200).send(responseData);
@@ -25,7 +25,7 @@ export default class StudentsController {
         .then((value) => {
           let studentsList = '';
           if (Object.keys(value).includes(major)) {
-            const students = value[major].sort();
+            const students = value[major];
             studentsList = `List: ${students.join(', ')}`;
           }
           response.status(200).send(studentsList);
