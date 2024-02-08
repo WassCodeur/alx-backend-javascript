@@ -6,7 +6,7 @@ export default class StudentsController {
   static getAllStudents(request, response) {
     readDatabase(dataPath)
       .then((value) => {
-        let responseData = ['This is the list of our students'];
+        const responseData = ['This is the list of our students'];
         for (const field of Object.keys(value)) {
           const students = value[field];
           responseData.push(`Number of students in ${field}: ${students.length}. List: ${students.join(', ')}`);
