@@ -6,10 +6,10 @@ export default class StudentsController {
   static getAllStudents(request, response) {
     readDatabase(dataPath)
       .then((value) => {
-        let responseData = 'This is the list of our students';
+        let responseData = 'This is the list of our students\n';
         for (const field of Object.keys(value)) {
           const students = value[field];
-          responseData += (`\nNumber of students in ${field}: ${students.length}. List: ${students.join(', ')}`);
+          responseData += (`Number of students in ${field}: ${students.length}. List: ${students.join(', ')}\n`);
         }
         response.status(200).send(responseData);
       })
